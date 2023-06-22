@@ -1,6 +1,6 @@
 # Ticket Booking System
 
-  +  Challenge: Develop a ticket booking system application for the Churchill laugh industry events.
+  #  Challenge: Develop a ticket booking system application for the Churchill laugh industry events.
 
   +  Requirements:
    + The administrator should be able to add/ edit or remove events.
