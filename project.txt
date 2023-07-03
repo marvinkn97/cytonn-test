@@ -1,0 +1,59 @@
+
+    public Event createEvent(Event event, MultipartFile imageFile) throws IOException {
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String fileName = generateUniqueFileName(imageFile.getOriginalFilename());
+            event.setEventImage(fileName);
+            saveImageFile(imageFile, fileName);
+        }
+
+        return eventRepository.save(event);
+    }
+
+    public Event updateEvent(Long id, Event event, MultipartFile imageFile) throws IOException {
+        Event existingEvent = eventRepository.findById(id).orElse(null);
+        if (existingEvent != null) {
+            existingEvent.setEventName(event.getEventName());
+            existingEvent.setEventDate(event.getEventDate());
+            existingEvent.setEventLocation(event.getEventLocation());
+            existingEvent.setEventCapacity(event.getEventCapacity());
+            existingEvent.setEventPrice(event.getEventPrice());
+
+            if (imageFile != null && !imageFile.isEmpty()) {
+                deleteImageFile(existingEvent.getEventImage());
+                String fileName = generateUniqueFileName(imageFile.getOriginalFilename());
+                existingEvent.setEventImage(fileName);
+                saveImageFile(imageFile, fileName);
+            }
+
+            return eventRepository.save(existingEvent);
+        } else {
+            return null;
+        }
+    }
+
+    public boolean deleteEvent(Long id) {
+        Event event = eventRepository.findById(id).orElse(null);
+        if (event != null) {
+            deleteImageFile(event.getEventImage());
+            eventRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private String generateUniqueFileName(String originalFileName) {
+        // Generate a unique file name based on your specific requirements
+        // Example: return UUID.randomUUID().toString() + "_" + originalFileName;
+        return originalFileName;
+    }
+
+    private void saveImageFile(MultipartFile imageFile, String fileName) throws IOException {
+        Path imagePath = // Specify the directory where you want to save the image
+        Files.copy(imageFile.getInputStream(), imagePath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    private void deleteImageFile(String fileName) throws IOException {
+        Path imagePath = // Specify the directory where the images are stored
+        Files.deleteIfExists(imagePath.resolve(fileName));
+    }

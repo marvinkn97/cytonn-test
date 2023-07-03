@@ -13,7 +13,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class EventDaoJpaImpl implements EventDao {
     private final EventRepository eventRepository;
-
     @Override
     public List<Event> findAllEvents() {
         return eventRepository.findAll();

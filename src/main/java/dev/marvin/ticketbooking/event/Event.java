@@ -1,26 +1,38 @@
 package dev.marvin.ticketbooking.event;
 
 import dev.marvin.ticketbooking.ticket.Ticket;
-import lombok.*;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
-@EqualsAndHashCode
-@ToString
+@NoArgsConstructor
+@Data
+@Entity
+@Table(name = "events")
 public class Event {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    private LocalDateTime dateOfEvent;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private String location;
     private Integer capacity;
-    private Ticket ticket;
+    private String image;
+    private String host;
+    private String description;
 
-    //TODO: add image
+    @OneToMany
+    Set<Ticket> availableTickets = new HashSet<>();
+
 
 }
