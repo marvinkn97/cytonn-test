@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -48,18 +48,22 @@ public class EventController {
 
     @Operation(summary = "Create New Event")
     @PostMapping
-    ResponseEntity<Event> createEvent(@RequestParam(value = "imageFile", required = false) MultipartFile imageFile, @RequestBody EventDto eventDto) {
-        Event savedEvent = eventService.createEvent(eventDto, imageFile);
+    ResponseEntity<Event> createEvent(@Validated @RequestBody EventDto newEventRegistrationRequest) {
+        Event savedEvent = eventService.createEvent(newEventRegistrationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedEvent);
     }
 
+    @Operation(summary = "Update Event By ID")
     @PutMapping("/{eventId}")
-    ResponseEntity<Event> updateEvent(@PathVariable("eventId") UUID eventId, EventDto eventDto, MultipartFile imageFile){
-        return null;
+    ResponseEntity<Event> updateEvent(@PathVariable("eventId") UUID eventId, @Validated @RequestBody EventDto eventUpdateRequest) {
+        Event updatedEvent = eventService.updateEvent(eventId, eventUpdateRequest);
+        return ResponseEntity.ok(updatedEvent);
     }
 
-
-
-
-
+    @Operation(summary = "Delete Event By ID")
+    @DeleteMapping("/{eventId}")
+    ResponseEntity<Event> deleteEventById(@PathVariable("eventId") UUID eventId) {
+        eventService.deleteEventById(eventId);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -1,6 +1,6 @@
 package dev.marvin.ticketbooking.ticket;
 
-import dev.marvin.ticketbooking.customer.Customer;
+import dev.marvin.ticketbooking.event.Event;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "tickets")
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -27,8 +26,7 @@ public class Ticket {
     private TicketStatus ticketStatus;
 
     @ManyToOne
+    @JoinColumn(name = "event_id", referencedColumnName = "id")
     private Event event;
 
-    @ManyToOne
-    private Customer customer;
 }
