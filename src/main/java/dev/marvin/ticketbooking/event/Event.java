@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
@@ -19,9 +18,10 @@ import java.util.UUID;
 @Entity
 public class Event {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @SequenceGenerator(name = "event_id_sequence", sequenceName = "event_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_id_sequence")
     @Column(updatable = false)
-    private UUID id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;

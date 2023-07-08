@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.UUID;
 
 @Primary
 @Repository
@@ -19,7 +18,7 @@ public class EventDaoJpaImpl implements EventDao {
     }
 
     @Override
-    public Event findEventById(UUID eventId) {
+    public Event findEventById(Long eventId) {
         return eventRepository.findEventById(eventId).orElseThrow(() -> new ResourceNotFoundException("event with id " + eventId + " not found"));
     }
 
@@ -29,7 +28,7 @@ public class EventDaoJpaImpl implements EventDao {
     }
 
     @Override
-    public void deleteEventById(UUID eventId) {
+    public void deleteEventById(Long eventId) {
         eventRepository.deleteById(eventId);
     }
 

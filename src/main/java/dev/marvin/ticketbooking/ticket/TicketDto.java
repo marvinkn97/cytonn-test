@@ -1,5 +1,4 @@
 package dev.marvin.ticketbooking.ticket;
 
-public enum TicketType {
-    VIP, REGULAR
+public record TicketDto() {
 }

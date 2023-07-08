@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 @Builder
 @Data
@@ -17,11 +16,15 @@ import java.util.UUID;
 @Entity
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @SequenceGenerator(name = "ticket_id_sequence", sequenceName = "ticket_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ticket_id_sequence")
+    private Long id;
+
     @Enumerated(EnumType.STRING)
     private TicketType ticketType;
+
     private BigDecimal price;
+
     @Enumerated(EnumType.STRING)
     private TicketStatus ticketStatus;
 

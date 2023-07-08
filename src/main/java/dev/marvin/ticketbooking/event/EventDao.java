@@ -1,12 +1,11 @@
 package dev.marvin.ticketbooking.event;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface EventDao {
     List<Event> findAllEvents();
-    Event findEventById(UUID id);
+    Event findEventById(Long id);
     Event save(Event event);
-    void deleteEventById(UUID id);
+    void deleteEventById(Long id);
     Event findEventByName(String name);
 }

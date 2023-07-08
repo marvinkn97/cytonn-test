@@ -34,8 +34,8 @@ public class UserDaoJpaImpl implements UserDao{
     }
 
     @Override
-    public User existsUserWithEmail(String email) {
-        return ;
+    public boolean existsUserWithEmail(String email) {
+        return userRepository.findUserByEmail(email) ;
     }
 
 }

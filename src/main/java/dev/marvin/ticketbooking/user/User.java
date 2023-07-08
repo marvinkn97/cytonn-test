@@ -6,16 +6,12 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@Data
 @Entity
 public class User {
     @Id
-    @SequenceGenerator(name = "user_id_sequence", sequenceName = "user_id_sequence")
+    @SequenceGenerator(name = "user_id_sequence", sequenceName = "user_id_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_sequence")
-    @Column(updatable = false)
     private Long id;
 
     @Column(nullable = false)

@@ -7,5 +7,5 @@ interface UserDao {
     User findUserById(Long userId);
     User save(User user);
     void deleteUserById(Long userId);
-    User existsUserWithEmail(String email);
+    boolean existsUserWithEmail(String email);
 }

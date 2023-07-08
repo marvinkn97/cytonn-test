@@ -9,9 +9,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
-@Tag(name = "Event API")
+@Tag(name = "Event API v1")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/events")
@@ -27,7 +26,7 @@ public class EventController {
 
     @Operation(summary = "Get Event By ID")
     @GetMapping("/{eventId}")
-    ResponseEntity<Event> getEventById(@PathVariable("eventId") UUID eventId) {
+    ResponseEntity<Event> getEventById(@PathVariable("eventId") Long eventId) {
         Event event = eventService.geEventById(eventId);
 
         if (event != null) {
@@ -55,14 +54,14 @@ public class EventController {
 
     @Operation(summary = "Update Event By ID")
     @PutMapping("/{eventId}")
-    ResponseEntity<Event> updateEvent(@PathVariable("eventId") UUID eventId, @Validated @RequestBody EventDto eventUpdateRequest) {
+    ResponseEntity<Event> updateEvent(@PathVariable("eventId") Long eventId, @Validated @RequestBody EventDto eventUpdateRequest) {
         Event updatedEvent = eventService.updateEvent(eventId, eventUpdateRequest);
         return ResponseEntity.ok(updatedEvent);
     }
 
     @Operation(summary = "Delete Event By ID")
     @DeleteMapping("/{eventId}")
-    ResponseEntity<Event> deleteEventById(@PathVariable("eventId") UUID eventId) {
+    ResponseEntity<Event> deleteEventById(@PathVariable("eventId") Long eventId) {
         eventService.deleteEventById(eventId);
         return ResponseEntity.noContent().build();
     }

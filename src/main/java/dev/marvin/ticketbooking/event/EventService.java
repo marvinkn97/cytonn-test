@@ -22,7 +22,7 @@ public class EventService {
         return eventDao.findAllEvents();
     }
 
-    public Event geEventById(UUID eventId) {
+    public Event geEventById(Long eventId) {
         return eventDao.findEventById(eventId);
     }
 
@@ -53,7 +53,7 @@ public class EventService {
 
     }
 
-    public Event updateEvent(UUID eventId, EventDto eventUpdateRequest) {
+    public Event updateEvent(Long eventId, EventDto eventUpdateRequest) {
         Event event = eventDao.findEventById(eventId);
 
         if (event == null) {
@@ -92,7 +92,7 @@ public class EventService {
 
     }
 
-    public void deleteEventById(UUID eventId) {
+    public void deleteEventById(Long eventId) {
         Event event = eventDao.findEventById(eventId);
 
         if (event != null) {
