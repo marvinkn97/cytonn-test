@@ -1,4 +1,4 @@
-package dev.marvin.ticketbooking.user;
+package dev.marvin.ticketbooking.appuser;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Data
 @Entity
-public class User {
+public class AppUser {
     @Id
     @SequenceGenerator(name = "user_id_sequence", sequenceName = "user_id_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_sequence")
@@ -17,7 +17,7 @@ public class User {
     @Column(nullable = false)
     private String fullName;
 
-    @Column(nullable = false)
+    @Column( nullable = false)
     private String email;
 
     @Column(nullable = false)

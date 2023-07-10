@@ -1,4 +1,4 @@
-package dev.marvin.ticketbooking.user;
+package dev.marvin.ticketbooking.appuser;
 
 import dev.marvin.ticketbooking.exception.DuplicateResourceException;
 import lombok.RequiredArgsConstructor;
@@ -12,21 +12,21 @@ public class UserService {
 
     private final UserDao userDao;
 
-    public List<User> getAllUsers(){
+    public List<AppUser> getAllUsers(){
         return userDao.findAllUsers();
     }
 
-    public User getUserById(Long userId){
+    public AppUser getUserById(Long userId){
         return userDao.findUserById(userId);
     }
 
-    public User createUser(UserDto newUserRegistrationRequest){
+    public AppUser createUser(UserDto newUserRegistrationRequest){
 
        if(userDao.existsUserWithEmail(newUserRegistrationRequest.email())){
            throw new DuplicateResourceException("email already taken");
        }
 
-       User newUser = User.builder()
+       AppUser newAppUser = AppUser.builder()
                .fullName(newUserRegistrationRequest.fullName())
                .email(newUserRegistrationRequest.email())
                .password(newUserRegistrationRequest.password())
@@ -34,14 +34,29 @@ public class UserService {
                .address(newUserRegistrationRequest.address())
                .build();
 
-        return userDao.save(newUser);
+        return userDao.save(newAppUser);
     }
 
-    public User updateUser(Long userId, UserDto userUpdateRequest){
+    public AppUser updateUser(Long userId, UserDto userUpdateRequest){
+
+        AppUser appUser = userDao.findUserById(userId);
+
+        if(userDao.existsUserWithEmail(userUpdateRequest.email())){
+            throw new DuplicateResourceException("email already taken");
+        }
+
+        appUser.setFullName(userUpdateRequest.fullName());
+        appUser.setEmail(userUpdateRequest.email());
+        appUser.setPassword(userUpdateRequest.password());
+
+
+
         return null;
     }
 
-    public void deleteUserById(Long userId){}
+    public void deleteUserById(Long userId){
+        userDao.deleteUserById(userId);
+    }
 
 
 }

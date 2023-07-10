@@ -7,5 +7,4 @@ public interface EventDao {
     Event findEventById(Long id);
     Event save(Event event);
     void deleteEventById(Long id);
-    Event findEventByName(String name);
 }

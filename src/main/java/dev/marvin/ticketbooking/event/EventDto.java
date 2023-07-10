@@ -1,40 +1,28 @@
 package dev.marvin.ticketbooking.event;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
 public record EventDto(
-        @NotBlank
-        @NotNull
+        @NotNull(message = "name is required")
         String name,
 
-        @NotBlank
-        @NotNull
+        @NotNull(message = "start date is required")
         LocalDateTime startDate,
 
-        @NotBlank
-        @NotNull
+        @NotNull(message = "end date is required")
         LocalDateTime endDate,
 
-        @NotBlank
-        @NotNull
+        @NotNull(message = "location is required")
         String location,
 
-        @NotNull
+        @NotNull(message = "capacity is required")
         Integer capacity,
 
-        @NotBlank
-        @NotNull
-        MultipartFile imageFile,
-
-        @NotBlank
-        @NotNull
+        @NotNull(message = "host is required")
         String host,
 
-        @NotBlank
-        @NotNull
+        @NotNull(message = "description is required")
         String description) {
 }

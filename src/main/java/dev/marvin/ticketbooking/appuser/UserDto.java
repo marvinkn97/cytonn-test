@@ -1,4 +1,4 @@
-package dev.marvin.ticketbooking.user;
+package dev.marvin.ticketbooking.appuser;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

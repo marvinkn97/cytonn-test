@@ -1,6 +1,5 @@
 package dev.marvin.ticketbooking.event;
 
-import dev.marvin.ticketbooking.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
@@ -19,7 +18,7 @@ public class EventDaoJpaImpl implements EventDao {
 
     @Override
     public Event findEventById(Long eventId) {
-        return eventRepository.findEventById(eventId).orElseThrow(() -> new ResourceNotFoundException("event with id " + eventId + " not found"));
+        return eventRepository.findEventById(eventId).orElse(null);
     }
 
     @Override
@@ -32,8 +31,4 @@ public class EventDaoJpaImpl implements EventDao {
         eventRepository.deleteById(eventId);
     }
 
-    @Override
-    public Event findEventByName(String eventName) {
-        return eventRepository.findEventByName(eventName).orElseThrow(() -> new ResourceNotFoundException(eventName  + " event not found"));
-    }
 }

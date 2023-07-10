@@ -39,15 +39,12 @@ public class Event {
     private Integer capacity;
 
     @Column(nullable = false)
-    private String image;
-
-    @Column(nullable = false)
     private String host;
 
     @Column(nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Ticket> tickets = new ArrayList<>();
 
 }

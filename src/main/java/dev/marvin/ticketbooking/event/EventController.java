@@ -35,16 +35,6 @@ public class EventController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @Operation(summary = "Get Event By Name")
-    @GetMapping("/{eventName}")
-    ResponseEntity<Event> getEventByName(@PathVariable("eventName") String name) {
-        Event event = eventService.getEventByName(name);
-        if (event != null) {
-            return ResponseEntity.ok(event);
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
     @Operation(summary = "Create New Event")
     @PostMapping
     ResponseEntity<Event> createEvent(@Validated @RequestBody EventDto newEventRegistrationRequest) {

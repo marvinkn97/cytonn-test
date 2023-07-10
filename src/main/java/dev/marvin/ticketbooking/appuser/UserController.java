@@ -1,4 +1,4 @@
-package dev.marvin.ticketbooking.user;
+package dev.marvin.ticketbooking.appuser;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "User API v1")
+@Tag(name = "AppUser API v1")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/users")
@@ -20,21 +20,21 @@ public class UserController {
     @Operation(summary = "Get All Users")
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<AppUser> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @Operation(summary = "Get User By ID")
+    @Operation(summary = "Get AppUser By ID")
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable("userId") Long userId) {
-        User user = userService.getUserById(userId);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<AppUser> getUserById(@PathVariable("userId") Long userId) {
+        AppUser appUser = userService.getUserById(userId);
+        return ResponseEntity.ok(appUser);
     }
 
-    @Operation(summary = "Create New User")
+    @Operation(summary = "Create New AppUser")
     @PostMapping
-    public ResponseEntity<User> createUser(@Validated @RequestBody UserDto newUserRegistrationRequest){
-        User createdUser = userService.createUser(newUserRegistrationRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    public ResponseEntity<AppUser> createUser(@Validated @RequestBody UserDto newUserRegistrationRequest){
+        AppUser createdAppUser = userService.createUser(newUserRegistrationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdAppUser);
     }
 }

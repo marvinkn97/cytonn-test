@@ -1,31 +1,31 @@
-package dev.marvin.ticketbooking.user;
+package dev.marvin.ticketbooking.appuser;
 
 import dev.marvin.ticketbooking.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Component
+@Repository
 @RequiredArgsConstructor
 @Primary
 public class UserDaoJpaImpl implements UserDao{
     private final UserRepository userRepository;
 
     @Override
-    public List<User> findAllUsers() {
+    public List<AppUser> findAllUsers() {
         return userRepository.findAll();
     }
 
     @Override
-    public User findUserById(Long userId) {
-        return userRepository.findUserById(userId).orElseThrow(() -> new ResourceNotFoundException("user with id [%s] not found".formatted(userId)));
+    public AppUser findUserById(Long userId) {
+        return userRepository.findUserById(userId).orElseThrow(() -> new ResourceNotFoundException("appuser with id [%s] not found".formatted(userId)));
     }
 
     @Override
-    public User save(User user) {
-        return userRepository.save(user);
+    public AppUser save(AppUser appUser) {
+        return userRepository.save(appUser);
     }
 
     @Override

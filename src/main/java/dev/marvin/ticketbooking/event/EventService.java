@@ -1,19 +1,13 @@
 package dev.marvin.ticketbooking.event;
 
+import dev.marvin.ticketbooking.exception.RequestValidationException;
 import dev.marvin.ticketbooking.exception.ResourceNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.UUID;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Service
 public class EventService {
     private final EventDao eventDao;
@@ -26,98 +20,63 @@ public class EventService {
         return eventDao.findEventById(eventId);
     }
 
-    public Event getEventByName(String eventName) {
-        return eventDao.findEventByName(eventName);
-    }
-
     public Event createEvent(EventDto eventDto) {
-
-        MultipartFile imageFile = eventDto.imageFile();
-
-        if (imageFile.isEmpty()) {
-            try {
-                throw new FileUploadException("failed to upload file");
-            } catch (FileUploadException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        String fileName = generateUniqueFileName(imageFile.getOriginalFilename());
-        Event newEvent = Event.builder().name(eventDto.name()).startDate(eventDto.startDate()).endDate(eventDto.endDate()).location(eventDto.location()).capacity(eventDto.capacity()).image(fileName).host(eventDto.host()).description(eventDto.description()).build();
-        try {
-            saveImageToFile(imageFile, fileName);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Event newEvent = Event.builder()
+                .name(eventDto.name())
+                .startDate(eventDto.startDate())
+                .endDate(eventDto.endDate())
+                .location(eventDto.location())
+                .capacity(eventDto.capacity())
+                .host(eventDto.host())
+                .description(eventDto.description())
+                .build();
 
         return eventDao.save(newEvent);
-
     }
 
     public Event updateEvent(Long eventId, EventDto eventUpdateRequest) {
         Event event = eventDao.findEventById(eventId);
+        boolean changes = false;
 
         if (event == null) {
             throw new ResourceNotFoundException("event with id [%s] not found".formatted(eventId));
         }
-
-        event.setName(eventUpdateRequest.name());
-        event.setStartDate(eventUpdateRequest.startDate());
-        event.setEndDate(eventUpdateRequest.endDate());
-        event.setLocation(eventUpdateRequest.location());
-        event.setCapacity(eventUpdateRequest.capacity());
-        event.setHost(eventUpdateRequest.host());
-        event.setDescription(eventUpdateRequest.description());
-
-        MultipartFile imageFile = eventUpdateRequest.imageFile();
-
-        if (imageFile.isEmpty()){
-            try {
-                throw new FileUploadException("file upload failed");
-            } catch (FileUploadException e) {
-                throw new RuntimeException(e);
-            }
+        if (eventUpdateRequest.name() != null && !eventUpdateRequest.name().equals(event.getName())) {
+            event.setName(eventUpdateRequest.name());
+            changes = true;
         }
-
-        if (!imageFile.isEmpty()) {
-            try {
-                deleteImageFile(event.getImage());
-                String fileName = generateUniqueFileName(imageFile.getOriginalFilename());
-                event.setImage(fileName);
-                saveImageToFile(imageFile, fileName);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+        if (eventUpdateRequest.startDate() != null && !eventUpdateRequest.startDate().equals(event.getStartDate())) {
+            event.setStartDate(eventUpdateRequest.startDate());
+            changes = true;
+        }
+        if (eventUpdateRequest.endDate() != null && !eventUpdateRequest.endDate().equals(event.getEndDate())) {
+            event.setEndDate(eventUpdateRequest.endDate());
+            changes = true;
+        }
+        if (eventUpdateRequest.location() != null && !eventUpdateRequest.location().equals(event.getLocation())) {
+            event.setLocation(eventUpdateRequest.location());
+            changes = true;
+        }
+        if (eventUpdateRequest.capacity() != null && !eventUpdateRequest.capacity().equals(event.getCapacity())) {
+            event.setCapacity(eventUpdateRequest.capacity());
+            changes = true;
+        }
+        if (eventUpdateRequest.host() != null && !eventUpdateRequest.host().equals(event.getHost())) {
+            event.setHost(eventUpdateRequest.host());
+            changes = true;
+        }
+        if (eventUpdateRequest.description() != null && !eventUpdateRequest.description().equals(event.getDescription())) {
+            event.setDescription(eventUpdateRequest.description());
+            changes = true;
+        }
+        if (!changes) {
+            throw new RequestValidationException("no data changes found");
         }
         return eventDao.save(event);
-
     }
 
     public void deleteEventById(Long eventId) {
-        Event event = eventDao.findEventById(eventId);
-
-        if (event != null) {
-            try {
-                deleteImageFile(event.getImage());
-                eventDao.deleteEventById(eventId);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-
+        eventDao.deleteEventById(eventId);
     }
 
-    private String generateUniqueFileName(String originalFileName) {
-        return UUID.randomUUID() + "_" + originalFileName;
-    }
-
-    private void saveImageToFile(MultipartFile imageFile, String fileName) throws IOException {
-        Path imagePath = Path.of("src/main/resources/static/img");
-        Files.copy(imageFile.getInputStream(), imagePath.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
-    }
-
-    private void deleteImageFile(String fileName) throws IOException {
-        Path imagePath = Path.of("src/main/resources/static/img");
-        Files.deleteIfExists(imagePath.resolve(fileName));
-    }
 }
