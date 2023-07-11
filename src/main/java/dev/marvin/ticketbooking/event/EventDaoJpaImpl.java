@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Primary
 @Repository
@@ -17,8 +18,8 @@ public class EventDaoJpaImpl implements EventDao {
     }
 
     @Override
-    public Event findEventById(Long eventId) {
-        return eventRepository.findEventById(eventId).orElse(null);
+    public Optional<Event> findEventById(Long eventId) {
+        return eventRepository.findEventById(eventId);
     }
 
     @Override

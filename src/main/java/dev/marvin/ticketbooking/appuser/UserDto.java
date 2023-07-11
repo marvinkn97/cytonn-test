@@ -1,6 +1,5 @@
 package dev.marvin.ticketbooking.appuser;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,7 +10,6 @@ public record UserDto(
 
         @NotBlank
         @NotNull
-        @Email(regexp = "/&#40;[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9._-]+&#41;/g")
         String email,
 
         @NotBlank

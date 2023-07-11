@@ -27,7 +27,7 @@ public class EventController {
     @Operation(summary = "Get Event By ID")
     @GetMapping("/{eventId}")
     ResponseEntity<Event> getEventById(@PathVariable("eventId") Long eventId) {
-        Event event = eventService.geEventById(eventId);
+        Event event = eventService.getEventById(eventId);
 
         if (event != null) {
             return ResponseEntity.ok(event);
@@ -55,4 +55,5 @@ public class EventController {
         eventService.deleteEventById(eventId);
         return ResponseEntity.noContent().build();
     }
+
 }

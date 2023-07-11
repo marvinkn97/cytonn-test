@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Tag(name = "AppUser API v1")
+@Tag(name = "User API v1")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/users")
@@ -24,17 +24,31 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @Operation(summary = "Get AppUser By ID")
+    @Operation(summary = "Get User By ID")
     @GetMapping("/{userId}")
     public ResponseEntity<AppUser> getUserById(@PathVariable("userId") Long userId) {
         AppUser appUser = userService.getUserById(userId);
         return ResponseEntity.ok(appUser);
     }
 
-    @Operation(summary = "Create New AppUser")
+    @Operation(summary = "Create New User")
     @PostMapping
-    public ResponseEntity<AppUser> createUser(@Validated @RequestBody UserDto newUserRegistrationRequest){
+    public ResponseEntity<AppUser> createUser(@Validated @RequestBody UserDto newUserRegistrationRequest) {
         AppUser createdAppUser = userService.createUser(newUserRegistrationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAppUser);
+    }
+
+    @Operation(summary = "Update User By ID ")
+    @PutMapping("/{userId}")
+    public ResponseEntity<AppUser> updateUser(@PathVariable("userId") Long userId, @Validated @RequestBody UserDto userUpdateRequest) {
+        AppUser updateUser = userService.updateUser(userId, userUpdateRequest);
+        return ResponseEntity.ok(updateUser);
+    }
+
+    @Operation(summary = "Delete User By ID")
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<AppUser> deleteUserById(@PathVariable("userId") Long userId) {
+        userService.deleteUserById(userId);
+        return ResponseEntity.noContent().build();
     }
 }

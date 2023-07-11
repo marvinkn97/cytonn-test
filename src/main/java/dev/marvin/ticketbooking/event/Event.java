@@ -1,5 +1,6 @@
 package dev.marvin.ticketbooking.event;
 
+import dev.marvin.ticketbooking.booking.Booking;
 import dev.marvin.ticketbooking.ticket.Ticket;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -16,9 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
+@Table(name = "events")
 public class Event {
     @Id
-    @SequenceGenerator(name = "event_id_sequence", sequenceName = "event_id_sequence")
+    @SequenceGenerator(name = "event_id_sequence", sequenceName = "event_id_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "event_id_sequence")
     @Column(updatable = false)
     private Long id;
@@ -27,10 +29,7 @@ public class Event {
     private String name;
 
     @Column(nullable = false)
-    private LocalDateTime startDate;
-
-    @Column(nullable = false)
-    private LocalDateTime endDate;
+    private LocalDateTime eventDate;
 
     @Column(nullable = false)
     private String location;
@@ -39,12 +38,12 @@ public class Event {
     private Integer capacity;
 
     @Column(nullable = false)
-    private String host;
-
-    @Column(nullable = false)
     private String description;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Ticket> tickets = new ArrayList<>();
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    private List<Booking> bookings = new ArrayList<>();
 
 }
